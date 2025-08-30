@@ -1,0 +1,337 @@
+/* src/App.css */
+
+/* Tipografía global y suavizado */
+:root{
+  --bg: #0c0c0c;
+  --panel: #121212;
+  --ink: #f6f6f6;
+  --muted: #b9b9b9;
+  --brand: #e3e3e3;
+  --accent: #ffffff; /* botones claros sobre fondos oscuros */
+  --primary: #ffffff; /* color de texto en botones primarios */
+  --radius: 16px;
+  --shadow: 0 8px 24px rgba(0,0,0,.25);
+  --maxw: 1100px;
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Inter", Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.container{ width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+/* ➕ contenedor ancho para la galería u otras secciones visuales */
+.container-wide{
+  width: 100%;
+  max-width: 1600px;       /* subí a 1800 si tenés 2K/4K */
+  margin: 0 auto;
+  padding: 0 clamp(12px, 2vw, 24px);
+}
+
+/* (Opcional) ocupar TODO el ancho sin padding lateral */
+.fullbleed{
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.section{ padding: 64px 0; }
+.section-title{ font-size: clamp(24px, 2vw, 32px); margin: 0 0 16px; }
+.section-kicker{ font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; margin: 0 0 24px; }
+
+/* Navbar (transparente por defecto) */
+.navbar{
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(8px);
+  background: transparent;                 /* ⬅️ ahora es transparente arriba */
+  border-bottom: 1px solid transparent;    /* ⬅️ sin línea visible */
+}
+.nav-content{
+  height: 64px; display: flex; align-items: center; justify-content: space-between;
+}
+.brand a{ color: var(--ink); font-weight: 700; text-decoration: none; letter-spacing: .04em; }
+nav a{
+  color: var(--muted); margin-left: 20px; text-decoration: none; transition: color .2s ease;
+}
+nav a:hover{ color: var(--ink); }
+
+/* Offset de anclas por header sticky */
+section { scroll-margin-top: 76px; } /* 64px header + respirito */
+
+/* Estilo de “link activo” en el navbar */
+.nav-links a.active{
+  color: var(--ink);
+  position: relative;
+}
+.nav-links a.active::after{
+  content:"";
+  position: absolute;
+  left: 0; right: 0; bottom: -8px;
+  height: 2px; border-radius: 2px;
+  background: rgba(255,255,255,.8);
+}
+
+/* HERO */
+.hero{
+  width: 100%;
+  min-height: 100vh;                        /* ⬅️ ocupa todo el viewport */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.hero::after{
+  content:""; position: absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.65));
+}
+.hero-overlay{
+  position: relative; z-index: 1; text-align: center; padding: 0 16px;
+  max-width: 900px;
+}
+.hero-title{
+  font-size: clamp(32px, 6vw, 64px); margin: 0 0 8px; font-weight: 700;
+}
+.hero-subtitle{ color: var(--muted); margin: 0 0 24px; }
+.hero-ctas{ display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+/* Quita el padding superior del primer bloque (Inicio) */
+#inicio.section{ padding-top: 0; }          /* ⬅️ elimina la franja oscura */
+
+/* Botones */
+.btn{
+  display: inline-block; padding: 12px 18px; border-radius: 999px;
+  text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,.18);
+  transition: transform .08s ease, background .2s ease, color .2s ease;
+}
+.btn:active{ transform: translateY(1px); }
+.btn-primary{ background: var(--accent); color: #111; }
+.btn-outline{ background: transparent; color: var(--ink); }
+.btn-outline:hover{ background: rgba(255,255,255,.08); }
+
+/* Galería */
+.gallery-block{ margin-bottom: 48px; }
+
+/* ▼ NUEVO: cards más grandes + hover */
+.gallery-card{
+  overflow: hidden; border-radius: var(--radius); background: var(--panel);
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+  cursor: zoom-in; /* indica que se puede ampliar */
+}
+.gallery-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0,0,0,.35);
+}
+.gallery-card img{
+  width: 100%; height: 320px; object-fit: cover; display: block;
+  transition: transform .35s ease;
+}
+.gallery-card:hover img{ transform: scale(1.03); }
+
+/* subir tamaño en pantallas más grandes */
+@media (min-width: 900px){
+  .gallery-card img{ height: 380px; }
+}
+@media (min-width: 1280px){
+  .gallery-card img{ height: 440px; }
+}
+
+.gallery-card figcaption{
+  padding: 10px 12px; color: var(--muted); font-size: 14px;
+}
+
+/* Ajustes Swiper */
+.swiper-wrapper-custom { padding: 8px 4px 28px; }
+.swiper-button-prev, .swiper-button-next{
+  color: #fff; /* flechas blancas */
+}
+.swiper-button-prev::after, .swiper-button-next::after{
+  font-size: 18px;
+}
+
+/* Bio */
+.bio{
+  display: grid; gap: 24px; align-items: center;
+  grid-template-columns: 1fr;
+}
+.bio-media img{
+  width: 100%; max-width: 360px; height: auto; border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.bio-text p{ margin: 0 0 12px; color: #dcdcdc; }
+.bio-links{ display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+
+/* Contacto */
+.contact-grid{
+  display: grid; gap: 24px; grid-template-columns: 1fr;
+}
+.contact-actions{ display: flex; gap: 12px; flex-wrap: wrap; }
+.contact-form{
+  background: var(--panel); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);
+  display: grid; gap: 12px;
+}
+.contact-form label{ display: grid; gap: 6px; color: var(--muted); font-size: 14px; }
+.contact-form input, .contact-form textarea{
+  width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12);
+  background: #0f0f0f; color: var(--ink);
+}
+.form-ok{ color: #a3e8b3; font-size: 14px; margin: 6px 0 0; }
+
+/* Footer */
+.footer{ border-top: 1px solid rgba(255,255,255,.08); padding: 24px 0; color: var(--muted); }
+
+/* Breakpoints */
+@media (min-width: 900px){
+  .bio{ grid-template-columns: 1fr 1.2fr; }
+  .contact-grid{ grid-template-columns: 1fr 1fr; }
+}
+
+/* --- UTILIDADES DE ANCHO TOTAL DEL VIEWPORT --- */
+html, body { width: 100%; }
+body { overflow-x: hidden; }
+
+/* Rompe cualquier contenedor y ocupa todo el ancho del viewport de forma estable */
+.full-viewport{
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* --- LIGHTBOX (overlay de imagen ampliada) --- */
+.lightbox{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.88);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 24px;
+}
+.lightbox-content{
+  position: relative;
+  width: min(92vw, 1400px);
+  height: min(92vh, 92vh);
+  display: flex; align-items: center; justify-content: center;
+}
+.lightbox-img{
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.5);
+}
+.lb-btn{
+  position: absolute; display: grid; place-items: center;
+  width: 42px; height: 42px; border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  color: #fff; border: 1px solid rgba(255,255,255,.22);
+  cursor: pointer; user-select: none;
+  transition: background .15s ease, transform .08s ease;
+}
+.lb-btn:hover{ background: rgba(255,255,255,.2); }
+.lb-btn:active{ transform: translateY(1px); }
+.lb-close{ top: 16px; right: 16px; font-size: 20px; }
+.lb-prev{ left: 8px; top: 50%; transform: translateY(-50%); }
+.lb-next{ right: 8px; top: 50%; transform: translateY(-50%); }
+
+/* ➕ Accesibilidad: contador y caption en la lightbox */
+.lb-counter{
+  position: absolute;
+  top: 16px; left: 50%;
+  transform: translateX(-50%);
+  color: #fff; font-weight: 600; font-size: 14px;
+  background: rgba(0,0,0,.35);
+  padding: 6px 10px; border-radius: 999px;
+}
+.lb-caption{
+  position: absolute;
+  bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  color: #eaeaea; font-size: 14px; line-height: 1.4;
+  background: rgba(0,0,0,.35);
+  padding: 8px 12px; border-radius: 12px;
+  max-width: min(92vw, 1200px);
+  text-align: center;
+}
+
+/* --- Navbar centrado + hamburguesa + sombra on scroll --- */
+.nav-content{
+  /* 3 columnas: marca | links centrados | botón a la derecha */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 64px;
+}
+.nav-links{
+  justify-self: center;
+  display: flex;
+  gap: 20px;
+}
+.menu-toggle{
+  justify-self: end;
+  display: none;
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  cursor: pointer;
+}
+.menu-toggle .menu-icon{
+  position: relative; display: block; width: 18px; height: 2px;
+  background: #fff; margin: 0 auto;
+}
+.menu-toggle .menu-icon::before,
+.menu-toggle .menu-icon::after{
+  content:""; position: absolute; left: 0; right: 0; height: 2px; background: #fff;
+}
+.menu-toggle .menu-icon::before{ top: -6px; }
+.menu-toggle .menu-icon::after{ top: 6px; }
+
+/* sombra al hacer scroll (navbar sólido) */
+.navbar.scrolled{
+  background: rgba(12,12,12,.82);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  border-bottom-color: rgba(255,255,255,.12);
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  .nav-links{ display: none; }
+  .menu-toggle{ display: grid; place-items: center; }
+  .nav-links.open{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: rgba(12,12,12,.98);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: 16px 24px;
+    z-index: 60;
+  }
+  .nav-links.open a{ font-size: 18px; padding: 6px 0; }
+}
+
+/* Estados de error y botón deshabilitado */
+.contact-form .form-error{
+  color: #ff9b9b;
+  font-size: 13px;
+  margin-top: 6px;
+}
+.contact-form input.error,
+.contact-form textarea.error{
+  border-color: #ff8a8a !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 138, 138, 0.15);
+}
+.btn[disabled]{
+  opacity: .6;
+  cursor: not-allowed;
+}
