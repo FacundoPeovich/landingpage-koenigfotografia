@@ -1,16 +1,34 @@
 // src/Bio.jsx
 function Bio() {
-  const bioImg = `${import.meta.env.BASE_URL}fotos/lolo.jpg`;
+  const base = import.meta.env.BASE_URL;
+
+  // 👉 cambia esta versión cuando quieras forzar recarga del asset
+  const ASSET_VER = "2";
+
+  // ruta principal y de respaldo + cache-busting (?v=2)
+  const primary  = `${base}fotos/lolo.jpg?v=${ASSET_VER}`;
+  const fallback = `${base}fotos/otros/lolo.jpg?v=${ASSET_VER}`;
 
   return (
     <div className="container bio">
       <div className="bio-media">
         <img
-          src={bioImg}
+          src={primary}
           alt="Retrato del fotógrafo/a"
-          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          onError={(e) => {
+            // si falló la principal, probamos la de /fotos/otros/
+            const img = e.currentTarget;
+            if (!img.dataset.triedFallback) {
+              img.dataset.triedFallback = "1";
+              img.src = fallback;
+            } else {
+              // si también falla, ocultamos
+              img.style.display = "none";
+            }
+          }}
         />
       </div>
+
       <div className="bio-text">
         <h2 className="section-title">Sobre mí</h2>
         <p>
