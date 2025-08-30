@@ -1,13 +1,11 @@
 // src/Inicio.jsx
 function Inicio() {
-  const heroBg = `${import.meta.env.BASE_URL}fotos/ex3.jpg`; // usa la base de Vite
+  const heroBg = `${import.meta.env.BASE_URL}fotos/ex3.jpg`;
 
   return (
     <div
       className="hero"
-      style={{
-        backgroundImage: `url(${heroBg})`,
-      }}
+      style={{ backgroundImage: `url(${heroBg})` }}
     >
       <div className="hero-overlay">
         <h1 className="hero-title">Fotografía que cuenta historias</h1>
