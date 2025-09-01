@@ -37,6 +37,7 @@ export const otros = [
 
 
 export const extras = [
-  { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=60", alt: "Extras 1" },
-  { src: "https://images.unsplash.com/photo-1517816428104-797678c7cf0d?auto=format&fit=crop&w=1200&q=60", alt: "Extras 2" },
+  { src: "fotos/extras/ex4.jpg", alt: "Extras 1" },
+  { src: "fotos/extras/ex5.jpg", alt: "Extras 2" },
+  { src: "fotos/extras/ex6.JPG", alt: "Extras 3" },
 ];

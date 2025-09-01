@@ -45,7 +45,7 @@ function App() {
         <div className="container nav-content">
           {/* Marca (izquierda) */}
           <div className="brand">
-            <a href="#inicio" onClick={closeMenu}>Tu Marca</a>
+            <a href="#inicio" onClick={closeMenu}>Koenig Fotografia</a>
           </div>
 
           {/* Links centrados */}
@@ -68,10 +68,12 @@ function App() {
       </header>
 
       <main>
-        <section id="inicio" className="section full-viewport">
+        {/* ⬇️ HÉROE a ancho completo: SIN .section, SOLO .full-viewport */}
+        <section id="inicio" className="full-viewport">
           <Inicio />
         </section>
 
+        {/* Resto de secciones con su .section normal */}
         <section id="galeria" className="section">
           <Galeria />
         </section>

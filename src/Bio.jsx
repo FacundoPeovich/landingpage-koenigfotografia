@@ -32,7 +32,7 @@ function Bio() {
       <div className="bio-text">
         <h2 className="section-title">Sobre mí</h2>
         <p>
-          Soy <strong>Tu Nombre</strong>, fotógrafo/a con foco en capturar emociones reales:
+          Soy <strong>Lourdes Koenig</strong>, fotógrafa con foco en capturar emociones reales:
           eventos, retratos y proyectos editoriales. Mi estilo combina luz natural,
           composición limpia y dirección sutil para lograr imágenes honestas y memorables.
         </p>
