@@ -17,9 +17,10 @@ function Carrusel({ titulo, fotos, onOpen }) {
         modules={[Navigation]}
         navigation
         spaceBetween={16}
+        watchOverflow={true}
         breakpoints={{
-          0:    { slidesPerView: 1 },
-          480:  { slidesPerView: 1.2 }, // asoma la próxima tarjeta
+          0:    { slidesPerView: 1 },    // 1 tarjeta
+          480:  { slidesPerView: 1.2 },  // asoma la próxima tarjeta
           640:  { slidesPerView: 2 },
           900:  { slidesPerView: 3 },
           1280: { slidesPerView: 4 },
@@ -29,7 +30,10 @@ function Carrusel({ titulo, fotos, onOpen }) {
       >
         {fotos.map((foto, idx) => (
           <SwiperSlide key={idx}>
-            <figure className="gallery-card" onClick={() => onOpen(fotos, idx, titulo)}>
+            <figure
+              className="gallery-card"
+              onClick={() => onOpen(fotos, idx, titulo)}
+            >
               <img
                 src={foto.src}
                 alt={foto.alt || `${titulo} ${idx + 1}`}

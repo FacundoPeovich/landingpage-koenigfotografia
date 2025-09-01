@@ -87,7 +87,7 @@ function App() {
 
       <footer className="footer">
         <div className="container">
-          <p>© {new Date().getFullYear()} Tu Nombre — Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} Koenig Fotografia — Todos los derechos reservados.</p>
         </div>
       </footer>
     </>

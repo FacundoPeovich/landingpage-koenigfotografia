@@ -49,8 +49,8 @@ body{
 .navbar{
   position: sticky; top: 0; z-index: 50;
   backdrop-filter: blur(8px);
-  background: transparent;                 /* ⬅️ ahora es transparente arriba */
-  border-bottom: 1px solid transparent;    /* ⬅️ sin línea visible */
+  background: transparent;
+  border-bottom: 1px solid transparent;
 }
 .nav-content{
   height: 64px; display: flex; align-items: center; justify-content: space-between;
@@ -80,7 +80,8 @@ section { scroll-margin-top: 76px; } /* 64px header + respirito */
 /* HERO */
 .hero{
   width: 100%;
-  min-height: 100vh;                        /* ⬅️ ocupa todo el viewport */
+  min-height: 100svh;                     /* asegura alto completo en mobile */
+  min-height: 100vh;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -103,7 +104,16 @@ section { scroll-margin-top: 76px; } /* 64px header + respirito */
 .hero-ctas{ display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
 /* Quita el padding superior del primer bloque (Inicio) */
-#inicio.section{ padding-top: 0; }          /* ⬅️ elimina la franja oscura */
+#inicio.section{ padding-top: 0; }
+
+/* 🔧 Patch hero full-bleed en móviles */
+@media (max-width: 900px){
+  .hero{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+}
 
 /* Botones */
 .btn{
@@ -119,29 +129,32 @@ section { scroll-margin-top: 76px; } /* 64px header + respirito */
 /* Galería */
 .gallery-block{ margin-bottom: 48px; }
 
-/* ▼ NUEVO: cards más grandes + hover */
+/* ▼ Cards responsive con aspect-ratio + hover */
 .gallery-card{
   overflow: hidden; border-radius: var(--radius); background: var(--panel);
   box-shadow: var(--shadow);
   transition: transform .18s ease, box-shadow .18s ease;
-  cursor: zoom-in; /* indica que se puede ampliar */
+  cursor: zoom-in;
+  aspect-ratio: 3 / 4;                    /* alto cómodo en móviles */
 }
 .gallery-card:hover{
   transform: translateY(-4px);
   box-shadow: 0 14px 36px rgba(0,0,0,.35);
 }
 .gallery-card img{
-  width: 100%; height: 320px; object-fit: cover; display: block;
+  width: 100%;
+  height: 100%;                           /* que llene el contenedor */
+  object-fit: cover; display: block;
   transition: transform .35s ease;
 }
 .gallery-card:hover img{ transform: scale(1.03); }
 
-/* subir tamaño en pantallas más grandes */
+/* Ajustamos proporción en pantallas más grandes */
 @media (min-width: 900px){
-  .gallery-card img{ height: 380px; }
+  .gallery-card{ aspect-ratio: 2 / 3; }
 }
 @media (min-width: 1280px){
-  .gallery-card img{ height: 440px; }
+  .gallery-card{ aspect-ratio: 5 / 7; }
 }
 
 .gallery-card figcaption{
@@ -150,12 +163,8 @@ section { scroll-margin-top: 76px; } /* 64px header + respirito */
 
 /* Ajustes Swiper */
 .swiper-wrapper-custom { padding: 8px 4px 28px; }
-.swiper-button-prev, .swiper-button-next{
-  color: #fff; /* flechas blancas */
-}
-.swiper-button-prev::after, .swiper-button-next::after{
-  font-size: 18px;
-}
+.swiper-button-prev, .swiper-button-next{ color: #fff; }
+.swiper-button-prev::after, .swiper-button-next::after{ font-size: 18px; }
 
 /* Bio */
 .bio{
@@ -188,7 +197,7 @@ section { scroll-margin-top: 76px; } /* 64px header + respirito */
 /* Footer */
 .footer{ border-top: 1px solid rgba(255,255,255,.08); padding: 24px 0; color: var(--muted); }
 
-/* Breakpoints */
+/* Breakpoints layout */
 @media (min-width: 900px){
   .bio{ grid-template-columns: 1fr 1.2fr; }
   .contact-grid{ grid-template-columns: 1fr 1fr; }
