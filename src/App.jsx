@@ -9,24 +9,14 @@ import "./App.css";
 const SECTIONS = ["inicio", "galeria", "bio", "contacto"];
 
 function App() {
-  const [scrolled, setScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [active, setActive] = useState("inicio");
+  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Observa secciones y marca el link activo
+  // Marca link activo según la sección visible
   useEffect(() => {
     const opts = { root: null, rootMargin: "0px 0px -50% 0px", threshold: 0 };
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
+      entries.forEach((entry) => entry.isIntersecting && setActive(entry.target.id));
     }, opts);
 
     SECTIONS.forEach((id) => {
@@ -37,43 +27,98 @@ function App() {
     return () => io.disconnect();
   }, []);
 
-  const closeMenu = () => setIsMenuOpen(false);
+  // Navbar: intensificar fondo + sombra al hacer scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Cierra el menú colapsable de Bootstrap en mobile
+  const closeIfOpen = () => {
+    const el = document.getElementById("navMain");
+    if (el && el.classList.contains("show")) {
+      const inst = window.bootstrap ? window.bootstrap.Collapse.getOrCreateInstance(el) : null;
+      inst && inst.hide();
+    }
+  };
 
   return (
     <>
-      <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
-        <div className="container nav-content">
+      {/* NAVBAR estilo vidrio + blur; links centrados */}
+      <nav
+        className={`navbar navbar-expand-lg navbar-glass sticky-top ${scrolled ? "is-scrolled" : ""}`}
+        data-bs-theme="dark"
+      >
+        <div className="container position-relative">
           {/* Marca (izquierda) */}
-          <div className="brand">
-            <a href="#inicio" onClick={closeMenu}>Koenig Fotografia</a>
+          <a className="navbar-brand fw-bold" href="#inicio" onClick={closeIfOpen}>
+            Koenig Fotografía
+          </a>
+
+          {/* Toggler */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navMain"
+            aria-controls="navMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+
+          {/* Menú colapsable: links centrados */}
+          <div className="collapse navbar-collapse justify-content-center" id="navMain">
+            <ul className="navbar-nav mx-auto gap-lg-3 text-center">
+              <li className="nav-item">
+                <a className={`nav-link ${active === "inicio" ? "active" : ""}`} href="#inicio" onClick={closeIfOpen}>
+                  Inicio
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className={`nav-link ${active === "galeria" ? "active" : ""}`} href="#galeria" onClick={closeIfOpen}>
+                  Galería
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className={`nav-link ${active === "bio" ? "active" : ""}`} href="#bio" onClick={closeIfOpen}>
+                  Bio
+                </a>
+              </li>
+
+              {/* CTA dentro del menú en mobile */}
+              <li className="nav-item d-lg-none mt-2">
+                <a
+                  className={`btn btn-outline-light btn-cta rounded-pill w-100 ${active === "contacto" ? "active" : ""}`}
+                  href="#contacto"
+                  onClick={closeIfOpen}
+                >
+                  Contacto
+                </a>
+              </li>
+            </ul>
           </div>
 
-          {/* Links centrados */}
-          <nav className={`nav-links ${isMenuOpen ? "open" : ""}`}>
-            <a href="#inicio"   onClick={closeMenu} className={active === "inicio" ? "active" : ""}>Inicio</a>
-            <a href="#galeria"  onClick={closeMenu} className={active === "galeria" ? "active" : ""}>Galería</a>
-            <a href="#bio"      onClick={closeMenu} className={active === "bio" ? "active" : ""}>Bio</a>
-            <a href="#contacto" onClick={closeMenu} className={active === "contacto" ? "active" : ""}>Contacto</a>
-          </nav>
-
-          {/* Hamburguesa (derecha, móvil) */}
-          <button
-            className="menu-toggle"
-            aria-label="Abrir menú"
-            onClick={() => setIsMenuOpen(v => !v)}
+          {/* CTA fija a la derecha en desktop */}
+          <a
+            className={`btn btn-outline-light btn-cta rounded-pill d-none d-lg-inline-flex position-absolute end-0 top-50 translate-middle-y ${active === "contacto" ? "active" : ""}`}
+            href="#contacto"
+            onClick={closeIfOpen}
           >
-            <span className="menu-icon" />
-          </button>
+            Contacto
+          </a>
         </div>
-      </header>
+      </nav>
 
+      {/* Secciones */}
       <main>
-        {/* ⬇️ HÉROE a ancho completo: SIN .section, SOLO .full-viewport */}
         <section id="inicio" className="full-viewport">
           <Inicio />
         </section>
 
-        {/* Resto de secciones con su .section normal */}
         <section id="galeria" className="section">
           <Galeria />
         </section>
@@ -89,7 +134,7 @@ function App() {
 
       <footer className="footer">
         <div className="container">
-          <p>© {new Date().getFullYear()} Koenig Fotografia — Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} Koenig Fotografía — Todos los derechos reservados.</p>
         </div>
       </footer>
     </>

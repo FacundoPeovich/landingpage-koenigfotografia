@@ -35,13 +35,11 @@ function Contacto() {
 
   async function onSubmit(e) {
     e.preventDefault();
-    // Honeypot: si 'website' viene completo, es bot → no enviamos
-    if (values.website) return;
+    if (values.website) return; // honeypot
 
     const eMap = validate(values);
     setErrors(eMap);
     if (Object.keys(eMap).length) {
-      // foco en el primer error
       if (eMap.nombre) nameRef.current?.focus();
       else if (eMap.email) emailRef.current?.focus();
       else if (eMap.mensaje) msgRef.current?.focus();
@@ -59,8 +57,6 @@ function Contacto() {
       setStatus("sent");
       setValues(initial);
       formRef.current.reset();
-
-      // Volvemos a "idle" tras unos segundos
       setTimeout(() => setStatus("idle"), 3500);
     } catch (err) {
       console.error(err);
@@ -70,11 +66,11 @@ function Contacto() {
   }
 
   return (
-    <div className="container contact">
-      <h2 className="section-title">Contacto</h2>
+    <div className="container py-5">
+      <h2 className="h3 section-title mb-3">Contacto</h2>
 
-      <form className="contact-form" ref={formRef} onSubmit={onSubmit} noValidate>
-        {/* Honeypot (oculto para usuarios reales) */}
+      <form ref={formRef} onSubmit={onSubmit} noValidate className="contact-form">
+        {/* Honeypot (oculto) */}
         <input
           type="text"
           name="website"
@@ -84,61 +80,86 @@ function Contacto() {
           onChange={onChange}
         />
 
-        <label>
-          Nombre
-          <input
-            ref={nameRef}
-            type="text"
-            name="nombre"
-            value={values.nombre}
-            onChange={onChange}
-            aria-invalid={!!errors.nombre}
-            aria-describedby={errors.nombre ? "err-nombre" : undefined}
-            required
-            className={errors.nombre ? "error" : ""}
-          />
-          {errors.nombre && <span id="err-nombre" className="form-error">{errors.nombre}</span>}
-        </label>
+        <div className="row g-3">
+          {/* Nombre */}
+          <div className="col-12 col-md-6">
+            <label className="form-label">Nombre</label>
+            <input
+              ref={nameRef}
+              type="text"
+              name="nombre"
+              value={values.nombre}
+              onChange={onChange}
+              aria-invalid={!!errors.nombre}
+              aria-describedby={errors.nombre ? "err-nombre" : undefined}
+              required
+              className={`form-control ${errors.nombre ? "is-invalid error" : ""}`}
+            />
+            {errors.nombre && (
+              <div id="err-nombre" className="invalid-feedback d-block form-error">
+                {errors.nombre}
+              </div>
+            )}
+          </div>
 
-        <label>
-          Email
-          <input
-            ref={emailRef}
-            type="email"
-            name="email"
-            value={values.email}
-            onChange={onChange}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? "err-email" : undefined}
-            required
-            className={errors.email ? "error" : ""}
-          />
-          {errors.email && <span id="err-email" className="form-error">{errors.email}</span>}
-        </label>
+          {/* Email */}
+          <div className="col-12 col-md-6">
+            <label className="form-label">Email</label>
+            <input
+              ref={emailRef}
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={onChange}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "err-email" : undefined}
+              required
+              className={`form-control ${errors.email ? "is-invalid error" : ""}`}
+            />
+            {errors.email && (
+              <div id="err-email" className="invalid-feedback d-block form-error">
+                {errors.email}
+              </div>
+            )}
+          </div>
 
-        <label>
-          Mensaje
-          <textarea
-            ref={msgRef}
-            name="mensaje"
-            rows="4"
-            value={values.mensaje}
-            onChange={onChange}
-            aria-invalid={!!errors.mensaje}
-            aria-describedby={errors.mensaje ? "err-mensaje" : undefined}
-            required
-            className={errors.mensaje ? "error" : ""}
-          />
-          {errors.mensaje && <span id="err-mensaje" className="form-error">{errors.mensaje}</span>}
-        </label>
+          {/* Mensaje */}
+          <div className="col-12">
+            <label className="form-label">Mensaje</label>
+            <textarea
+              ref={msgRef}
+              name="mensaje"
+              rows="5"
+              value={values.mensaje}
+              onChange={onChange}
+              aria-invalid={!!errors.mensaje}
+              aria-describedby={errors.mensaje ? "err-mensaje" : undefined}
+              required
+              className={`form-control ${errors.mensaje ? "is-invalid error" : ""}`}
+            />
+            {errors.mensaje && (
+              <div id="err-mensaje" className="invalid-feedback d-block form-error">
+                {errors.mensaje}
+              </div>
+            )}
+          </div>
 
-        <button className="btn btn-primary" type="submit" disabled={status !== "idle"}>
-          {status === "sending" ? "Enviando..." : status === "sent" ? "Enviado ✅" : "Enviar"}
-        </button>
-
-        {status === "sent" && (
-          <p className="form-ok" aria-live="polite">¡Gracias! Tu mensaje fue enviado.</p>
-        )}
+          {/* Botón pill ancho centrado */}
+          <div className="col-12">
+            <button
+              className="btn btn-light btn-submit rounded-pill w-100 py-3 fs-6 fw-semibold"
+              type="submit"
+              disabled={status !== "idle"}
+            >
+              {status === "sending" ? "Enviando..." : status === "sent" ? "Enviado ✅" : "Enviar"}
+            </button>
+            {status === "sent" && (
+              <p className="form-ok mb-0 mt-2 text-center" aria-live="polite">
+                ¡Gracias! Tu mensaje fue enviado.
+              </p>
+            )}
+          </div>
+        </div>
       </form>
     </div>
   );

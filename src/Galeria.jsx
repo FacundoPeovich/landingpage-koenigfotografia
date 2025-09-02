@@ -1,10 +1,12 @@
 // src/Galeria.jsx
-import { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { escolares, eventos, otros, extras } from "./data/gallery";
+
+// 👇 Asegurá el sufijo .js (evita issues en Vite/Windows)
+import { escolares, eventos, otros, extras } from "./data/gallery.js";
 
 /* ---- Carrusel re-usable ---- */
 function Carrusel({ titulo, fotos, onOpen }) {
@@ -12,15 +14,15 @@ function Carrusel({ titulo, fotos, onOpen }) {
 
   return (
     <div className="gallery-block">
-      <h2 className="section-title">{titulo}</h2>
+      <h2 className="h3 mb-3 section-title">{titulo}</h2>
       <Swiper
         modules={[Navigation]}
         navigation
         spaceBetween={16}
         watchOverflow={true}
         breakpoints={{
-          0:    { slidesPerView: 1 },    // 1 tarjeta
-          480:  { slidesPerView: 1.2 },  // asoma la próxima tarjeta
+          0:    { slidesPerView: 1 },
+          480:  { slidesPerView: 1.2 },
           640:  { slidesPerView: 2 },
           900:  { slidesPerView: 3 },
           1280: { slidesPerView: 4 },
@@ -57,7 +59,6 @@ function Lightbox({ list, index, onClose, onPrev, onNext }) {
   const prevBtnRef  = useRef(null);
   const nextBtnRef  = useRef(null);
 
-  // Foco inicial + teclado (ESC, ←/→, TAB trap)
   useEffect(() => {
     const previous = document.activeElement;
     closeBtnRef.current?.focus();
@@ -69,7 +70,7 @@ function Lightbox({ list, index, onClose, onPrev, onNext }) {
 
       if (e.key === "Tab") {
         const order = [prevBtnRef.current, closeBtnRef.current, nextBtnRef.current].filter(Boolean);
-        if (order.length === 0) return;
+        if (!order.length) return;
         const first = order[0];
         const last = order[order.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -95,18 +96,14 @@ function Lightbox({ list, index, onClose, onPrev, onNext }) {
         aria-label={`Vista ampliada. ${caption}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Contador accesible */}
         <div className="lb-counter" aria-live="polite">
           {index + 1} / {list.length}
         </div>
 
-        {/* Imagen */}
         <img className="lightbox-img" src={item.src} alt={caption} />
 
-        {/* Caption */}
         <div className="lb-caption">{caption}</div>
 
-        {/* Controles */}
         <button
           ref={closeBtnRef}
           className="lb-btn lb-close"
@@ -142,7 +139,7 @@ function Galeria() {
   const [lbList, setLbList] = useState([]);
   const [lbIndex, setLbIndex] = useState(0);
 
-  const openLightbox = (list, index /*, titulo */) => {
+  const openLightbox = (list, index) => {
     setLbList(list);
     setLbIndex(index);
     setLbOpen(true);
@@ -159,13 +156,13 @@ function Galeria() {
   );
 
   return (
-    <div className="container-wide">
-      <h1 className="section-kicker">Galería</h1>
+    <div className="container-xxl py-5">
+      <p className="section-kicker mb-1">Galería</p>
 
       <Carrusel titulo="Escolares" fotos={escolares} onOpen={openLightbox} />
-      <Carrusel titulo="Eventos" fotos={eventos} onOpen={openLightbox} />
-      <Carrusel titulo="Otros" fotos={otros} onOpen={openLightbox} />
-      <Carrusel titulo="Extras" fotos={extras} onOpen={openLightbox} />
+      <Carrusel titulo="Eventos"   fotos={eventos}   onOpen={openLightbox} />
+      <Carrusel titulo="Otros"     fotos={otros}     onOpen={openLightbox} />
+      <Carrusel titulo="Extras"    fotos={extras}    onOpen={openLightbox} />
 
       {lbOpen && (
         <Lightbox

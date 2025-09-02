@@ -1,13 +1,17 @@
 // src/main.jsx
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css"; // si lo tenías
-import "./App.css";   // nuestros estilos
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js' // navbar toggler, tooltips, etc.
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+
+// Tus estilos (van después de Bootstrap para poder overridear)
+import './index.css'
+import './App.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-);
-
+)
