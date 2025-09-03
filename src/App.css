@@ -230,3 +230,8 @@ section { scroll-margin-top: 76px; }
   .navbar-glass .navbar-brand{ font-size: 1.0625rem; }
 }
 
+/* Tamaño del logo del navbar */
+.brand-logo{ height: 28px; width: auto; display:block; }
+@media (min-width: 992px){
+  .brand-logo{ height: 32px; }
+}

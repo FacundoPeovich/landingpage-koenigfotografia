@@ -44,6 +44,8 @@ function App() {
     }
   };
 
+  const base = import.meta.env.BASE_URL;
+
   return (
     <>
       {/* NAVBAR estilo vidrio + blur; links centrados */}
@@ -52,9 +54,15 @@ function App() {
         data-bs-theme="dark"
       >
         <div className="container position-relative">
-          {/* Marca (izquierda) */}
-          <a className="navbar-brand fw-bold" href="#inicio" onClick={closeIfOpen}>
-            Koenig Fotografía
+          {/* Marca (izquierda) con logo */}
+          <a className="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#inicio" onClick={closeIfOpen}>
+            <img
+              src={`${base}logo-kf.svg`}
+              alt="Koenig Fotografía"
+              className="brand-logo"
+              height={32}
+            />
+            <span className="d-none d-sm-inline">Koenig Fotografía</span>
           </a>
 
           {/* Toggler */}
