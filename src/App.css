@@ -235,3 +235,8 @@ section { scroll-margin-top: 76px; }
 @media (min-width: 992px){
   .brand-logo{ height: 32px; }
 }
+
+/* Ratio homogéneo 4:5 para todas las cards */
+.gallery-card{ aspect-ratio: 4 / 5; }
+@media (min-width: 900px){ .gallery-card{ aspect-ratio: 4 / 5; } }
+@media (min-width: 1280px){ .gallery-card{ aspect-ratio: 4 / 5; } }

@@ -5,8 +5,8 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// 👇 Asegurá el sufijo .js (evita issues en Vite/Windows)
-import { escolares, eventos, otros, extras } from "./data/gallery.js";
+// Importá tus nuevas secciones
+import { escolares, eventos, musica, deportes } from "./data/gallery.js";
 
 /* ---- Carrusel re-usable ---- */
 function Carrusel({ titulo, fotos, onOpen }) {
@@ -18,15 +18,15 @@ function Carrusel({ titulo, fotos, onOpen }) {
       <Swiper
         modules={[Navigation]}
         navigation
-        spaceBetween={16}
         watchOverflow={true}
+        // 👉 Menos slides por vista = cards más grandes
         breakpoints={{
-          0:    { slidesPerView: 1 },
-          480:  { slidesPerView: 1.2 },
-          640:  { slidesPerView: 2 },
-          900:  { slidesPerView: 3 },
-          1280: { slidesPerView: 4 },
-          1600: { slidesPerView: 5 },
+          0:    { slidesPerView: 1.05, spaceBetween: 12 }, // asoma la siguiente
+          480:  { slidesPerView: 1.3,  spaceBetween: 14 },
+          640:  { slidesPerView: 2,    spaceBetween: 16 },
+          900:  { slidesPerView: 2.5,  spaceBetween: 18 },
+          1200: { slidesPerView: 3,    spaceBetween: 22 }, // antes 4
+          1536: { slidesPerView: 4,    spaceBetween: 24 }, // antes 5
         }}
         className="swiper-wrapper-custom"
       >
@@ -159,10 +159,10 @@ function Galeria() {
     <div className="container-xxl py-5">
       <p className="section-kicker mb-1">Galería</p>
 
-      <Carrusel titulo="Escolares" fotos={escolares} onOpen={openLightbox} />
-      <Carrusel titulo="Eventos"   fotos={eventos}   onOpen={openLightbox} />
-      <Carrusel titulo="Otros"     fotos={otros}     onOpen={openLightbox} />
-      <Carrusel titulo="Extras"    fotos={extras}    onOpen={openLightbox} />
+      <Carrusel titulo="Escolares"         fotos={escolares} onOpen={openLightbox} />
+      <Carrusel titulo="Eventos"  fotos={eventos}   onOpen={openLightbox} />
+      <Carrusel titulo="Música"    fotos={musica}    onOpen={openLightbox} />
+      <Carrusel titulo="Deportes"          fotos={deportes}  onOpen={openLightbox} />
 
       {lbOpen && (
         <Lightbox
